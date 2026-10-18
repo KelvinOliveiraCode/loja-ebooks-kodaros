@@ -1,177 +1,93 @@
-# Loja de E-books KODAROS
+# loja-ebooks-kodaros
 
-Loja de e-books para desenvolvedores: catálogo, carrinho de compras e checkout simulado com Stripe. Construído com React 18, TypeScript, Tailwind CSS e Vite.
+![JavaScript/TypeScript](https://img.shields.io/badge/JS-TS-yellow?logo=javascript)   ![status: concluido](https://img.shields.io/badge/status-concluido-green)   ![licenca: MIT](https://img.shields.io/badge/licenca-MIT-blue)
 
-English: KODAROS e-book store — catalog, shopping cart, and a simulated Stripe checkout. Built with React 18, TypeScript, Tailwind CSS, and Vite.
+## Resumo
 
-## Stack
+Aplicacao web em JavaScript/TypeScript. Projeto funcional, loja-ebooks-kodaros
 
-- React 18 + TypeScript (strict)
-- Vite
-- Tailwind CSS
-- Vitest (testes / tests)
-- Stripe: cliente simulado (mock), sem chave de API nem cobrança real
+## Problema / por que existe
 
-## Conteúdo do repositório
+O projeto entrega uma interface ou utilitario web para um recorte especifico, com foco em navegador como ambiente de execucao e sem dependencia de servidor proprio.
 
-- `src/lib/books.ts` — catálogo de 6 e-books (título, autor, preço em centavos, páginas, formato).
-- `src/lib/cart.ts` — redutor do carrinho (adicionar, remover, alterar quantidade, limpar) e seletores (total, quantidade de itens).
-- `src/lib/stripe.ts` — Stripe simulado: cria sessão de checkout e simula pagamento (aprova ou recusa com base no e-mail; e-mails com "fail" são recusados).
-- `src/contexts/CartContext.tsx` — estado global do carrinho via `useReducer`.
-- `src/components/` — catálogo, card do e-book, carrinho, checkout, navbar, confirmação.
-- `tests/` — 13 testes (carrinho e checkout), sem mocks de comportamento.
+## Arquitetura
 
-## Como usar
+- Camada de apresentacao: componentes e paginas que renderizam a interface.
+- Camada de logica: funcoes e hooks que processam dados e estado.
+- Comunicacao: requisicoes HTTP a APIs externas ou dados locais, quando aplicavel.
 
-Instale as dependências:
+O build e feito com Vite (ou ferramenta equivalente), gerando arquivos estaticos prontos para hospedagem.
+
+## Tecnologias
+
+- JavaScript / TypeScript
+- react
+- react-dom
+- @types/react
+- @types/react-dom
+- @vitejs/plugin-react
+- autoprefixer
+- postcss
+- tailwindcss
+- typescript
+- vite
+- vitest
+
+- Sem CI configurado neste repositorio.
+
+O repositorio contem testes automatizados.
+
+## O que faz
+
+Projeto funcional, loja-ebooks-kodaros
+
+## Como rodar
+
+Requisitos: Node.js e npm (ou yarn/pnpm).
 
 ```
+# instalar dependencias
 npm install
+
+# rodar em desenvolvimento
+vite
+
+# build para producao
+tsc --noEmit && vite build
+
+# rodar testes
+vitest run
 ```
 
-Rode o servidor de desenvolvimento:
+## Estrutura do projeto
 
-```
-npm run dev
-```
+- src/ (15 arquivo(s))
+- tests/ (2 arquivo(s))
+- .gitignore, BRIEF.md, index.html, package-lock.json, package.json, postcss.config.js, README.en.md, README.md, tailwind.config.js, tsconfig.json e mais 2
 
-Abra http://localhost:5173.
 
-Verifique tipos e gere a build de produção:
+## Trade-offs e decisões
 
-```
-npm run build
-```
+- Build estatico: facil de hospedar (GitHub Pages, Vercel, Netlify) sem servidor.
+- Dependencias minimas para reduzir superficie de manutencao.
+- Navegador como unico ambiente de execucao necessario.
 
-Rode os testes:
+## Limitações conhecidas
 
-```
-npm test
-```
+- Funciona no navegador; depende de conexao a internet para recursos externos.
 
-Resultado esperado: 13 testes passando em 2 arquivos.
-
-## Checkout simulado
-
-O checkout não cobra nada. O mock do Stripe (`src/lib/stripe.ts`):
-
-1. Cria uma sessão de checkout com `id` e `url` determinísticos.
-2. Simula o pagamento:
-   - e-mail válido e valor positivo → aprovado (`ok: true`);
-   - e-mail contendo `fail` → recusado pelo banco (`ok: false`);
-   - e-mail sem `@` ou valor zerado → erro de validação.
-
-Em produção, substitua `stripe.ts` pela instância real do Stripe (`new Stripe(process.env.STRIPE_SECRET_KEY)`).
 
 ## Testes
 
-Todos os testes usam código real (sem mocks de comportamento) e rodam com Vitest:
-
 ```
-npm test
-```
-
-Saída do último run:
-
-```
-Test Files  2 passed (2)
-  Tests    13 passed (13)
+vitest run
 ```
 
 ## Licença
 
-MIT
+Distribuído sob a licenca MIT. Consulte o arquivo `LICENSE` do repositorio.
 
 ## Autor
 
-Kelvin Oliveira
-
-English below.
-
----
-
-# KODAROS E-book Store
-
-Developer e-book store: catalog, shopping cart, and a simulated Stripe checkout. Built with React 18, TypeScript, Tailwind CSS, and Vite.
-
-## Stack
-
-- React 18 + TypeScript (strict)
-- Vite
-- Tailwind CSS
-- Vitest (tests)
-- Stripe: simulated client (mock), no API key, no real charges
-
-## Repository contents
-
-- `src/lib/books.ts` — catalog of 6 e-books (title, author, price in cents, pages, format).
-- `src/lib/cart.ts` — cart reducer (add, remove, change quantity, clear) and selectors (total, item count).
-- `src/lib/stripe.ts` — simulated Stripe: creates a checkout session and simulates payment (approves or declines based on email; emails containing "fail" are declined).
-- `src/contexts/CartContext.tsx` — global cart state via `useReducer`.
-- `src/components/` — catalog, e-book card, cart, checkout, navbar, confirmation screen.
-- `tests/` — 13 tests (cart and checkout), no behavioral mocks.
-
-## How to use
-
-Install dependencies:
-
-```
-npm install
-```
-
-Run the dev server:
-
-```
-npm run dev
-```
-
-Open http://localhost:5173.
-
-Type-check and build for production:
-
-```
-npm run build
-```
-
-Run tests:
-
-```
-npm test
-```
-
-Expected result: 13 tests passing across 2 files.
-
-## Simulated checkout
-
-The checkout charges nothing. The Stripe mock (`src/lib/stripe.ts`):
-
-1. Creates a checkout session with deterministic `id` and `url`.
-2. Simulates payment:
-   - valid email and positive amount → approved (`ok: true`);
-   - email containing `fail` → declined by the bank (`ok: false`);
-   - email without `@` or zero amount → validation error.
-
-For production, replace `stripe.ts` with the real Stripe instance (`new Stripe(process.env.STRIPE_SECRET_KEY)`).
-
-## Tests
-
-All tests use real code (no behavioral mocks) and run with Vitest:
-
-```
-npm test
-```
-
-Last run output:
-
-```
-Test Files  2 passed (2)
-  Tests    13 passed (13)
-```
-
-## License
-
-MIT
-
-## Author
-
-Kelvin Oliveira
+Kelvin Oliveira, https://github.com/KelvinOliveiraCode
+Portfolio: https://kelvinoliveiracode.github.io/portfolio/
