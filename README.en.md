@@ -1,127 +1,104 @@
 # loja-ebooks-kodaros
 
-<div align="center">
-
 **English** · [Português (Brasil)](README.md)
 
-</div>
-
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/) [![React 18](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/) [![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev/) [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-06B6D4?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/) [![MIT License](https://img.shields.io/badge/License-MIT-f4c430?style=flat-square)](LICENSE)
-
-### Projeto funcional ,  loja-ebooks-kodaros
-
----
+![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?style=flat-square&logo=typescript&logoColor=white) ![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react) ![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite) ![Tailwind](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=flat-square&logo=tailwindcss) ![Vitest](https://img.shields.io/badge/Vitest-13%20tests-6E9F18?style=flat-square&logo=vitest) ![MIT](https://img.shields.io/badge/License-MIT-f4c430?style=flat-square)
 
 ## What it is
 
-Projeto funcional ,  loja-ebooks-kodaros
+**The KODAROS e-book store**: a **React 18 + TypeScript + Tailwind SPA** with a **catalog**, **cart** (reducer + context) and **checkout with a simulated Stripe** (built-in mock, no API key). It is the storefront for the KODAROS technical e-books brand.
 
----
+## Status
 
-## Quick Start
+A working store prototype, tested (13 tests: cart + checkout) with a confirmed production build (~50 kB gzip).
 
-```bash
-# Clone and enter
-git clone https://github.com/KelvinOliveiraCode/<repo>.git
-cd <repo>
+## Features
 
-# Install dependencies
-npm install
+- **Catalog** (`lib/books.ts`, `components/Catalog.tsx`, `BookCard.tsx`): the published e-books with cover and price.
+- **Cart** (`lib/cart.ts`, `contexts/CartContext.tsx`, `components/Cart.tsx`): a reducer with `ADD`/`REMOVE`/`SET_QUANTITY` actions; quantity 0 removes the item.
+- **Currency** (`lib/currency.ts`): BRL price formatting.
+- **Checkout** (`components/Checkout.tsx`, `lib/stripe.ts`): creates a payment session via a **simulated Stripe client** (`cs_sim_*`) — no network, no key; in production, swap in `new Stripe(process.env.STRIPE_SECRET_KEY)`.
+- **Success** (`Success.tsx`): post-payment screen.
 
-# Development server
-npm run dev
+## Architecture
 
-# Production build
-npm run build
+A React SPA (Vite). Cart state lives in a `CartContext` with `useReducer`; the cart/currency logic is pure (testable without a DOM); Stripe is a local mock in `lib/stripe.ts`.
 
-# Run tests
-npm test
+```mermaid
+flowchart LR
+    CAT[Catalog/BookCard] -->|ADD| CART[CartContext + cartReducer]
+    CART --> C[Cart.tsx]
+    C -->|checkout| ST[stripe.ts mock - cs_sim_*]
+    ST --> S[Success.tsx]
+    CUR[currency.ts - BRL] --> C
 ```
 
-## How it works
+## Stack
 
-Arquitetura de componente em arquivo único (`App.tsx`): toda a UI, estado e lógica vivem em um arquivo para simplicidade de deploy e build zero-config.
+- React 18.3, TypeScript ~5.6, Tailwind CSS 3.4
+- Vite 5.4 (build/dev), Vitest 2.1 (tests)
+- No runtime dependencies beyond React (Stripe is a mock)
 
-Decisões arquiteturais principais:
-- **Estado global** via `useState` + `useMemo` (evita overhead do Context API)
-- **Agregações memoizadas** para gráficos e insights
-- **Dados mock in-line** como constantes TypeScript para prototipagem sem backend
-- **IA baseada em regras** (`getAIResponse`) ,  determinística, offline, custo zero
+## Repository layout
 
----
+```
+loja-ebooks-kodaros/
+├── src/
+│   ├── lib/          # books, cart, currency, stripe (mock)
+│   ├── components/   # Catalog, BookCard, Cart, Checkout, Success, Navbar
+│   ├── contexts/CartContext.tsx
+│   └── types.ts · App.tsx · main.tsx
+├── tests/ (cart · checkout)
+├── index.html · tailwind.config.js · vite.config.ts
+└── package.json
+```
 
-## Capabilities
+## Prerequisites and installation
 
-| Capacidade | Descrição |
-|------------|-------------|
-| Dashboard | 6 cards de métricas (Saldo, Receitas, Despesas, Economia, Investimentos, Patrimônio) |
-| Fluxo de Caixa | Gráfico de barras (7d/30d) com Recharts ,  Receitas, Despesas, Saldo por período |
-| Orçamentos | Orçamentos por categoria com barras de progresso, alertas de estouro |
-| Metas | Anéis de progresso com cálculo de economia mensal e contagem regressiva |
-| Assistente IA | Chat baseado em regras (getAIResponse) ,  análise de gastos, dicas, projeções |
-| Insights | Alertas automáticos: picos de delivery, crescimento patrimonial, breakdown por categoria |
-| Transações | Adicionar/editar receitas/despesas com categorias, tags, seletor de data |
-| Persistência | localStorage ,  estado sobrevive a reload, zero backend |
+Node.js ≥ 18.
 
+```bash
+npm install
+```
 
----
+## How to run
 
+```bash
+npm run dev        # dev server
+npm run build      # production build (tsc + vite)
+npm run preview    # serve the build
+```
 
+## Tests and quality
 
----
+Real commands (verified by the agent):
 
-## FAQ
+```bash
+npm test
+# Test Files  2 passed (2) · Tests  13 passed (13)
 
-<details>
-<summary><strong>What is this project?</strong></summary>
+npm run build
+# ✓ built in ~2s (bundle ~158 kB, ~50 kB gzip)
+```
 
-A React/TypeScript study/project demonstrating core concepts.
+## Technical decisions and trade-offs
 
-</details>
+- **Simulated Stripe (mock)**: the store runs end to end with no keys and no network; switching to the real Stripe is a one-line change.
+- **Reducer + Context** for the cart: predictable, independently testable state.
+- **Tailwind**: fast styling without a bespoke design system.
 
-<details>
-<summary><strong>How do I run it?</strong></summary>
+## Known limitations and roadmap
 
-See [Quick Start](#quick-start) for copy-paste commands.
+- Simulated payment — it does not process real payments.
+- No e-book delivery/download after purchase (simulated flow).
+- The catalog is fixed in `lib/books.ts`.
 
-</details>
+## Development process
 
-<details>
-<summary><strong>Are there tests?</strong></summary>
+An individual project by Kelvin Oliveira, built with orchestrated AI agents and reviewed by the author. KODAROS is the author's e-books brand.
 
-No automated tests in this repository.
+## License and author
 
-</details>
+MIT — Copyright (c) 2026 Kelvin Oliveira.
 
-<details>
-<summary><strong>Can I use this in production?</strong></summary>
-
-This is a **study/portfolio project**. Review and harden (auth, persistence, monitoring, etc.) before production use.
-
-</details>
-
-
-
----
-
-## Documentation
-
-- **Source Code** ,  Browse the `src/` directory for implementation details
-- **API Reference** ,  TypeScript types in source
-- **Architecture Diagram** ,  See [architecture.mermaid](docs/architecture.mermaid) (if present)
-- **Changelog** ,  [CHANGELOG.md](CHANGELOG.md) (if present)
-- **Contributing** ,  [CONTRIBUTING.md](CONTRIBUTING.md) (if present)
-
-## License
-
-[MIT](LICENSE) ,  Kelvin Oliveira
-
----
-
-<div align="center">
-
-**Built with** · TypeScript + React + Vite + Tailwind
-
-**Author** · [Kelvin Oliveira](https://github.com/KelvinOliveiraCode) · [Portfolio](https://kelvinoliveiracode.github.io/portfolio/)
-
-</div>
+**Author**: [Kelvin Oliveira](https://github.com/KelvinOliveiraCode) · [Portfolio](https://kelvinoliveiracode.github.io/portfolio/)
