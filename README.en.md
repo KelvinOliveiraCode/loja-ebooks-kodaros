@@ -17,7 +17,7 @@ A working store prototype, tested (13 tests: cart + checkout) with a confirmed p
 - **Catalog** (`lib/books.ts`, `components/Catalog.tsx`, `BookCard.tsx`): the published e-books with cover and price.
 - **Cart** (`lib/cart.ts`, `contexts/CartContext.tsx`, `components/Cart.tsx`): a reducer with `ADD`/`REMOVE`/`SET_QUANTITY` actions; quantity 0 removes the item.
 - **Currency** (`lib/currency.ts`): BRL price formatting.
-- **Checkout** (`components/Checkout.tsx`, `lib/stripe.ts`): creates a payment session via a **simulated Stripe client** (`cs_sim_*`) — no network, no key; in production, swap in `new Stripe(process.env.STRIPE_SECRET_KEY)`.
+- **Checkout** (`components/Checkout.tsx`, `lib/stripe.ts`): creates a payment session via a **simulated Stripe client** (`cs_sim_*`), no network, no key; in production, swap in `new Stripe(process.env.STRIPE_SECRET_KEY)`.
 - **Success** (`Success.tsx`): post-payment screen.
 
 ## Architecture
@@ -41,7 +41,7 @@ flowchart LR
 
 ## Repository layout
 
-```
+```text
 loja-ebooks-kodaros/
 ├── src/
 │   ├── lib/          # books, cart, currency, stripe (mock)
@@ -78,18 +78,18 @@ npm test
 # Test Files  2 passed (2) · Tests  13 passed (13)
 
 npm run build
-# ✓ built in ~2s (bundle ~158 kB, ~50 kB gzip)
+# built in ~2s (bundle ~158 kB, ~50 kB gzip)
 ```
 
 ## Technical decisions and trade-offs
 
-- **Simulated Stripe (mock)**: the store runs end to end with no keys and no network; switching to the real Stripe is a one-line change.
+- Simulated Stripe (mock): the store runs end to end with no keys and no network; switching to the real Stripe is a one-line change.
 - **Reducer + Context** for the cart: predictable, independently testable state.
-- **Tailwind**: fast styling without a bespoke design system.
+- Tailwind: fast styling without a bespoke design system.
 
 ## Known limitations and roadmap
 
-- Simulated payment — it does not process real payments.
+- Simulated payment, it does not process real payments.
 - No e-book delivery/download after purchase (simulated flow).
 - The catalog is fixed in `lib/books.ts`.
 
@@ -99,6 +99,6 @@ An individual project by Kelvin Oliveira, built with orchestrated AI agents and 
 
 ## License and author
 
-MIT — Copyright (c) 2026 Kelvin Oliveira.
+MIT. Copyright (c) 2026 Kelvin Oliveira.
 
 **Author**: [Kelvin Oliveira](https://github.com/KelvinOliveiraCode) · [Portfolio](https://kelvinoliveiracode.github.io/portfolio/)

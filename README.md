@@ -17,7 +17,7 @@ Protótipo funcional de loja, testado (13 testes: carrinho + checkout) e com bui
 - **Catálogo** (`lib/books.ts`, `components/Catalog.tsx`, `BookCard.tsx`): os e-books publicados com capa e preço.
 - **Carrinho** (`lib/cart.ts`, `contexts/CartContext.tsx`, `components/Cart.tsx`): reducer com ações `ADD`/`REMOVE`/`SET_QUANTITY`; quantidade 0 remove o item.
 - **Moeda** (`lib/currency.ts`): formatação de preço em BRL.
-- **Checkout** (`components/Checkout.tsx`, `lib/stripe.ts`): cria uma sessão de pagamento via **cliente Stripe simulado** (`cs_sim_*`) — sem rede nem chave; em produção, trocar por `new Stripe(process.env.STRIPE_SECRET_KEY)`.
+- **Checkout** (`components/Checkout.tsx`, `lib/stripe.ts`): cria uma sessão de pagamento via **cliente Stripe simulado** (`cs_sim_*`), sem rede nem chave; em produção, trocar por `new Stripe(process.env.STRIPE_SECRET_KEY)`.
 - **Sucesso** (`Success.tsx`): tela pós-pagamento.
 
 ## Arquitetura
@@ -41,7 +41,7 @@ flowchart LR
 
 ## Estrutura do repositório
 
-```
+```text
 loja-ebooks-kodaros/
 ├── src/
 │   ├── lib/          # books, cart, currency, stripe (mock)
@@ -78,18 +78,18 @@ npm test
 # Test Files  2 passed (2) · Tests  13 passed (13)
 
 npm run build
-# ✓ built in ~2s (bundle ~158 kB, ~50 kB gzip)
+# built in ~2s (bundle ~158 kB, ~50 kB gzip)
 ```
 
 ## Decisões técnicas e trade-offs
 
-- **Stripe simulado (mock)**: a loja funciona ponta a ponta sem chaves nem rede; trocar pelo Stripe real é uma linha.
+- Stripe simulado (mock): a loja funciona ponta a ponta sem chaves nem rede; trocar pelo Stripe real é uma linha.
 - **Reducer + Context** para o carrinho: estado previsível e testável isoladamente.
-- **Tailwind**: estilização rápida sem design system próprio.
+- Tailwind: estilização rápida sem design system próprio.
 
 ## Limitações conhecidas e roadmap
 
-- Pagamento simulado — não processa pagamentos reais.
+- Pagamento simulado, não processa pagamentos reais.
 - Sem entrega/download dos e-books pós-compra (fluxo simulado).
 - Catálogo fixo em `lib/books.ts`.
 
@@ -99,6 +99,6 @@ Projeto individual de Kelvin Oliveira, construído com agentes de IA orquestrado
 
 ## Licença e autor
 
-MIT — Copyright (c) 2026 Kelvin Oliveira.
+MIT. Copyright (c) 2026 Kelvin Oliveira.
 
 **Autor**: [Kelvin Oliveira](https://github.com/KelvinOliveiraCode) · [Portfólio](https://kelvinoliveiracode.github.io/portfolio/)
